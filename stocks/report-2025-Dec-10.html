@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Danh Mục Đầu Tư - 10/12/2025</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin-top: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .profit {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .loss {
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .bg-profit {
+            background-color: #d4edda !important;
+        }
+
+        .bg-loss {
+            background-color: #f8d7da !important;
+        }
+
+        .table th {
+            background-color: #34495e;
+            color: white;
+            border: none;
+        }
+
+        .heatmap-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            height: 300px;
+        }
+
+        .heatmap-item {
+            position: relative;
+            border-radius: 8px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .heatmap-item:hover {
+            transform: scale(1.02);
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .heatmap-item .symbol {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .heatmap-item .percent {
+            font-size: 1rem;
+        }
+
+        .summary-box {
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .summary-total {
+            background: linear-gradient(45deg, #1abc9c, #16a085);
+        }
+
+        /* Neutral/Greenish default, will override with JS if loss */
+        .market-badge {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="text-center mb-4 position-relative">
+            <h1 class="header-title">BÁO CÁO DANH MỤC ĐẦU TƯ</h1>
+            <p class="header-subtitle">Ngày báo cáo: 10/12/2025 | Dữ liệu cập nhật: Đóng cửa phiên 10/12</p>
+            <button id="togglePrivacyBtn" class="btn btn-light position-absolute top-0 end-0" title="Ẩn/Hiện Số Tiền">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye"
+                    viewBox="0 0 16 16" id="eyeIcon">
+                    <path
+                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Market Overview -->
+        <div class="alert alert-warning" role="alert">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+                        <use xlink:href="#exclamation-triangle-fill" />
+                    </svg>
+                    <div>
+                        <strong>Thị Trường Chung (VN-INDEX):</strong>
+                        <span class="loss">1,718.98 điểm (-28.19)</span>
+                        <span class="badge bg-danger market-badge ms-2">Điều Chỉnh Mạnh</span>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#marketDetails" aria-expanded="false" aria-controls="marketDetails">
+                    Xem Chi Tiết
+                </button>
+            </div>
+            <div class="collapse mt-3" id="marketDetails">
+                <div class="card card-body bg-light border-0">
+                    <ul class="list-unstyled mb-0">
+                        <li><strong>Xu hướng:</strong> Ngắn hạn chuyển sang điều chỉnh/tiêu cực.</li>
+                        <li><strong>Dòng tiền:</strong> Thanh khoản sụt giảm so với phiên bùng nổ, lực cầu bắt đáy chưa
+                            mạnh.</li>
+                        <li><strong>Tâm lý:</strong> Thận trọng bao trùm, lo ngại tạo đỉnh ngắn hạn.</li>
+                        <li class="mt-2"><strong>Nhận định Broker AI:</strong> Đây có thể là nhịp "rũ bỏ" (shakeout) cần
+                            thiết để làm mới dòng tiền. Tuy nhiên, việc gãy các mốc hỗ trợ quan trọng đòi hỏi sự cẩn
+                            trọng cao độ.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Portfolio Summary -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card p-3 text-center h-100 justify-content-center"
+                    style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                    <h5>Tổng Giá Trị Hiện Tại</h5>
+                    <h2 id="totalValue" class="private-data" data-original="61,060,000 VND">61,060,000 VND</h2>
+                    <small class="private-data" data-original="Vốn đầu tư: 61,612,000 VND">Vốn đầu tư: 61,612,000
+                        VND</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 text-center h-100 justify-content-center" id="plCard">
+                    <h5>Tổng Lãi/Lỗ</h5>
+                    <h2 id="totalPL" class="private-data" data-original="-552,000 VND">-552,000 VND</h2>
+                    <h4 id="totalPLPercent">(-0.90%)</h4>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 h-100">
+                    <canvas id="allocationChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Holdings Table -->
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h5 class="m-0 text-dark">Chi Tiết Danh Mục</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Mã CP</th>
+                                <th class="text-end">Số Lượng</th>
+                                <th class="text-end">Giá Vốn</th>
+                                <th class="text-end">Giá Hiện Tại</th>
+                                <th class="text-end">Giá Trị</th>
+                                <th class="text-end">Lãi/Lỗ (VND)</th>
+                                <th class="text-end">% Lãi/Lỗ</th>
+                                <th class="text-center">Trạng Thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tbody>
+                            <!-- ACB -->
+                            <tr class="bg-loss-light stock-row" onclick="showStockDetail('ACB')"
+                                style="cursor: pointer;">
+                                <td class="fw-bold text-decoration-underline text-primary">ACB</td>
+                                <td class="text-end private-data" data-original="400">400</td>
+                                <td class="text-end private-data" data-original="24,270">24,270</td>
+                                <td class="text-end">24,100</td>
+                                <td class="text-end private-data" data-original="9,640,000">9,640,000</td>
+                                <td class="text-end loss private-data" data-original="-68,000">-68,000</td>
+                                <td class="text-end loss">-0.70%</td>
+                                <td class="text-center"><span class="badge bg-warning text-dark">Nắm Giữ</span></td>
+                            </tr>
+                            <!-- MSN -->
+                            <tr class="bg-loss-light stock-row" onclick="showStockDetail('MSN')"
+                                style="cursor: pointer;">
+                                <td class="fw-bold text-decoration-underline text-primary">MSN</td>
+                                <td class="text-end private-data" data-original="200">200</td>
+                                <td class="text-end private-data" data-original="77,560">77,560</td>
+                                <td class="text-end">77,000</td>
+                                <td class="text-end private-data" data-original="15,400,000">15,400,000</td>
+                                <td class="text-end loss private-data" data-original="-112,000">-112,000</td>
+                                <td class="text-end loss">-0.72%</td>
+                                <td class="text-center"><span class="badge bg-secondary">Theo Dõi</span></td>
+                            </tr>
+                            <!-- CEO -->
+                            <tr class="bg-loss stock-row" onclick="showStockDetail('CEO')" style="cursor: pointer;">
+                                <td class="fw-bold text-decoration-underline text-primary">CEO</td>
+                                <td class="text-end private-data" data-original="100">100</td>
+                                <td class="text-end private-data" data-original="27,000">27,000</td>
+                                <td class="text-end">24,200</td>
+                                <td class="text-end private-data" data-original="2,420,000">2,420,000</td>
+                                <td class="text-end loss private-data" data-original="-280,000">-280,000</td>
+                                <td class="text-end loss">-10.37%</td>
+                                <td class="text-center"><span class="badge bg-danger">BÁN GẤP</span></td>
+                            </tr>
+                            <!-- CTD -->
+                            <tr class="bg-loss-light stock-row" onclick="showStockDetail('CTD')"
+                                style="cursor: pointer;">
+                                <td class="fw-bold text-decoration-underline text-primary">CTD</td>
+                                <td class="text-end private-data" data-original="400">400</td>
+                                <td class="text-end private-data" data-original="84,230">84,230</td>
+                                <td class="text-end">84,000</td>
+                                <td class="text-end private-data" data-original="33,600,000">33,600,000</td>
+                                <td class="text-end loss private-data" data-original="-92,000">-92,000</td>
+                                <td class="text-end loss">-0.27%</td>
+                                <td class="text-center"><span class="badge bg-warning text-dark">Nắm Giữ</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heatmap & Performance Chart -->
+        <div class="row">
+            <!-- Heatmap Section -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="m-0">Bản Đồ Nhiệt Danh Mục (Portfolio Heatmap)</h5>
+                        <small class="text-muted">Diện tích = Tỷ trọng vốn | Màu sắc = Mức độ Lãi/Lỗ</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="heatmap-container" id="heatmap">
+                            <!-- Heatmap items will be injected by JS or hardcoded below for simplicity since data is static -->
+                            <!-- Calculating relative widths based on Current Value Total ~61M -->
+                            <!-- CTD: ~55% -->
+                            <div class="heatmap-item" style="width: 55%; background-color: #e74c3c; opacity: 0.8;"
+                                title="CTD: -0.27%">
+                                <span class="symbol">CTD</span>
+                                <span class="percent">-0.27%</span>
+                            </div>
+                            <!-- MSN: ~25% -->
+                            <div class="heatmap-item" style="width: 25%; background-color: #e74c3c; opacity: 0.9;"
+                                title="MSN: -0.72%">
+                                <span class="symbol">MSN</span>
+                                <span class="percent">-0.72%</span>
+                            </div>
+                            <!-- ACB: ~16% -->
+                            <div class="heatmap-item" style="width: 15%; background-color: #e74c3c; opacity: 0.9;"
+                                title="ACB: -0.70%">
+                                <span class="symbol">ACB</span>
+                                <span class="percent">-0.70%</span>
+                            </div>
+                            <!-- CEO: ~4% -->
+                            <div class="heatmap-item" style="flex-grow: 1; min-width: 40px; background-color: #c0392b;"
+                                title="CEO: -10.37%">
+                                <span class="symbol">CEO</span>
+                                <span class="symbol" style="font-size: 0.8rem">-10%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Chart Section -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white">
+                        <h5 class="m-0">Biểu Đồ Hiệu Suất (Profit/Loss)</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-info" role="alert">
+            <h5 class="alert-heading"><i class="bi bi-lightbulb"></i> Khuyến Nghị & Kế Hoạch Hành Động</h5>
+            <hr>
+            <p><strong>1. QUẢN TRỊ RỦI RO LÀ ƯU TIÊN SỐ 1:</strong></p>
+            <ul>
+                <li>Thị trường đang điều chỉnh mạnh, "còn tiền là còn cơ hội".</li>
+                <li><strong>Bắt buộc:</strong> Cắt lỗ <strong>CEO</strong> ngay phiên ATO hoặc giá tốt nhất trong phiên
+                    mai.</li>
+                <li><strong>Theo dõi:</strong> Nếu VN-Index thủng tiếp 1,700 điểm, cân nhắc hạ 1/2 tỷ trọng
+                    <strong>MSN</strong> và <strong>CTD</strong> để đưa tiền mặt về mức an toàn (50% tiền - 50% cổ).
+                </li>
+            </ul>
+            <p><strong>2. Tâm lý giao dịch:</strong></p>
+            <ul>
+                <li>Không bắt đáy (No bottom fishing) khi thị trường đang rơi.</li>
+                <li>Bình tĩnh quan sát phản ứng tại các mốc hỗ trợ.</li>
+            </ul>
+        </div>
+
+        <div class="text-center mt-5 mb-5 fst-italic text-muted">
+            "Thị trường chứng khoán luôn có lúc thăng trầm, quan trọng là giữ được vốn để quay lại khi sóng yên biển
+            lặng."
+        </div>
+
+        <!-- Modal for Stock Details -->
+        <div class="modal fade" id="stockDetailModal" tabindex="-1" aria-labelledby="stockDetailModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stockDetailModalLabel">Phân Tích Chi Tiết</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="stockDetailContent">
+                        <!-- Content will be injected by JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Data Configuration ---
+        const portfolioData = {
+            labels: ['ACB', 'MSN', 'CEO', 'CTD'],
+            values: [9640000, 15400000, 2420000, 33600000],
+            pl_percent: [-0.70, -0.72, -10.37, -0.27],
+            pl_value: [-68000, -112000, -280000, -92000]
+        };
+
+        // Styling logic for PL Card
+        const totalPLVal = -552000;
+        const plCard = document.getElementById('plCard');
+        if (totalPLVal >= 0) {
+            plCard.style.background = 'linear-gradient(135deg, #2ecc71 0%, #27ae60 100%)';
+        } else {
+            plCard.style.background = 'linear-gradient(135deg, #e74c3c 0%, #c0392b 100%)';
+        }
+        plCard.style.color = 'white';
+
+        // --- Charts ---
+
+        // 1. Allocation Pie Chart
+        const ctxAlloc = document.getElementById('allocationChart').getContext('2d');
+        new Chart(ctxAlloc, {
+            type: 'doughnut',
+            data: {
+                labels: portfolioData.labels,
+                datasets: [{
+                    data: portfolioData.values,
+                    backgroundColor: ['#3498db', '#9b59b6', '#e74c3c', '#f1c40f'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    title: { display: true, text: 'Phân Bổ Tài Sản' }
+                }
+            }
+        });
+
+        // 2. Performance Bar Chart
+        const ctxPerf = document.getElementById('performanceChart').getContext('2d');
+        const plColors = portfolioData.pl_percent.map(val => val >= 0 ? '#2ecc71' : '#e74c3c');
+
+        new Chart(ctxPerf, {
+            type: 'bar',
+            data: {
+                labels: portfolioData.labels,
+                datasets: [{
+                    label: '% Lãi/Lỗ',
+                    data: portfolioData.pl_percent,
+                    backgroundColor: plColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#f0f0f0' },
+                        ticks: { callback: function (value) { return value + '%' } }
+                    }
+                }
+            }
+        });
+
+        // --- Stock Detail Modal Logic ---
+        const stockDetails = {
+            "ACB": {
+                name: "Ngân hàng TMCP Á Châu",
+                analysis: "ACB vẫn đang tích lũy trong biên độ hẹp, chưa vi phạm các ngưỡng hỗ trợ cứng (24.0). Đây là mã có tính phòng thủ cao trong danh mục lúc này.",
+                action: "<span class='badge bg-warning text-dark'>NẮM GIỮ (HOLD)</span>. Nếu thủng 23.8 với vol lớn thì cân nhắc hạ tỷ trọng."
+            },
+            "MSN": {
+                name: "Tập đoàn Masan",
+                analysis: "MSN đang test lại vùng hỗ trợ đáy cũ kỹ thuật. Lực bán hôm nay không quá đột biến nhưng giá đóng cửa thấp nhất phiên là tín hiệu xấu.",
+                action: "<span class='badge bg-secondary'>THEO DÕI SÁT (WATCH)</span>. Vùng 76.0-76.5 là chốt chặn cuối cùng. Nếu thủng vùng này, xu hướng hồi phục sẽ gãy -> BÁN."
+            },
+            "CEO": {
+                name: "Tập đoàn C.E.O",
+                analysis: "<strong class='text-danger'>BÁO ĐỘNG ĐỎ.</strong> Cổ phiếu rơi tự do không phanh. Mức lỗ >10% là mức 'chết người' trong đầu tư ngắn hạn.",
+                action: "<span class='badge bg-danger'>BÁN KHẨN CẤP (STRONG SELL)</span>. Không được phép chần chừ thêm nữa. Càng giữ càng rủi ro chôn vốn và lỗ sâu thêm."
+            },
+            "CTD": {
+                name: "Xây dựng Coteccons",
+                analysis: "Sau phiên bùng nổ giả (bull trap) hôm 08/12, CTD đã trả lại toàn bộ điểm số. Giá về lại nền tích lũy cũ. Tuy nhiên, so với thị trường chung giảm mạnh, việc CTD chỉ giảm nhẹ về nền vẫn là tín hiệu chấp nhận được.",
+                action: "<span class='badge bg-warning text-dark'>NẮM GIỮ (HOLD)</span>. Vẫn chiếm tỷ trọng lớn nhất, nên chưa vội bán khi chưa thủng nền 83."
+            }
+        };
+
+        function showStockDetail(symbol) {
+            const data = stockDetails[symbol];
+            if (data) {
+                const content = `
+                <h4 class="text-primary">${symbol} - ${data.name}</h4>
+                <div class="mt-3">
+                    <strong>Phân tích:</strong>
+                    <p>${data.analysis}</p>
+                </div>
+                <div class="mt-3">
+                    <strong>Hành động khuyến nghị:</strong>
+                    <p>${data.action}</p>
+                </div>
+            `;
+                document.getElementById('stockDetailContent').innerHTML = content;
+                var myModal = new bootstrap.Modal(document.getElementById('stockDetailModal'));
+                myModal.show();
+            }
+        }
+
+        // --- Toggle Privacy Logic ---
+        const toggleBtn = document.getElementById('togglePrivacyBtn');
+        const eyeIcon = document.getElementById('eyeIcon');
+        let isHidden = false;
+
+        toggleBtn.addEventListener('click', () => {
+            isHidden = !isHidden;
+            const elements = document.querySelectorAll('.private-data');
+
+            if (isHidden) {
+                // Hide data
+                elements.forEach(el => {
+                    el.textContent = '****';
+                });
+                // Change icon to eye-slash
+                eyeIcon.innerHTML = `
+                <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+                <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+                <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+            `;
+            } else {
+                // Show data
+                elements.forEach(el => {
+                    el.textContent = el.getAttribute('data-original');
+                });
+                // Change icon back to eye
+                eyeIcon.innerHTML = `
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+            `;
+            }
+        });
+
+    </script>
+</body>
+
+</html>
