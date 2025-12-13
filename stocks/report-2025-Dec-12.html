@@ -11,10 +11,24 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #050510;
+            --card-bg: #1A1B26;
+            --text-main: #E2E8F0;
+            --text-muted: #94A3B8;
+            --accent-gradient: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+            --border-color: #2e3c50;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
         }
 
         .container {
@@ -23,48 +37,90 @@
             margin-bottom: 50px;
         }
 
+        /* Card Styling */
         .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border: none;
-            border-radius: 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin-bottom: 20px;
+            color: var(--text-main);
         }
 
+        .card-header {
+            background-color: transparent;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Typography */
         .header-title {
-            color: #2c3e50;
-            font-weight: 700;
+            font-weight: 800;
             margin-bottom: 5px;
+            background: linear-gradient(90deg, #60A5FA, #A78BFA);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .header-subtitle {
-            color: #7f8c8d;
+            color: var(--text-muted);
             font-size: 0.9rem;
         }
 
+        h5.text-dark {
+            color: var(--text-main) !important;
+        }
+
+        /* Profit/Loss Colors */
         .profit {
-            color: #27ae60;
+            color: #4Ade80;
             font-weight: bold;
         }
 
         .loss {
-            color: #c0392b;
+            color: #F87171;
             font-weight: bold;
         }
 
         .bg-profit {
-            background-color: #d4edda !important;
+            background-color: rgba(74, 222, 128, 0.1) !important;
         }
 
         .bg-loss {
-            background-color: #f8d7da !important;
+            background-color: rgba(248, 113, 113, 0.1) !important;
+        }
+
+        .bg-loss-light {
+            background-color: rgba(248, 113, 113, 0.05) !important;
+            color: var(--text-main);
+        }
+
+        /* Table Styling */
+        .table {
+            color: var(--text-main);
+            margin-bottom: 0;
         }
 
         .table th {
-            background-color: #34495e;
-            color: white;
-            border: none;
+            background-color: #0f111a;
+            color: #94A3B8;
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
+        .table td {
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+        }
+
+        /* Heatmap */
         .heatmap-container {
             display: flex;
             flex-wrap: wrap;
@@ -75,50 +131,146 @@
 
         .heatmap-item {
             position: relative;
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            transition: transform 0.2s;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .heatmap-item:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px) scale(1.02);
             z-index: 10;
             cursor: pointer;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
         }
 
         .heatmap-item .symbol {
             font-size: 1.5rem;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         .heatmap-item .percent {
             font-size: 1rem;
-        }
-
-        .summary-box {
-            padding: 20px;
-            border-radius: 10px;
-            color: white;
-            text-align: center;
-        }
-
-        .summary-total {
-            background: linear-gradient(45deg, #1abc9c, #16a085);
+            opacity: 0.9;
         }
 
         .market-badge {
             font-size: 0.8rem;
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
         }
 
-        .stock-row:hover {
-            background-color: #f1f1f1;
+        /* Modal Dark Theme */
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        /* Alerts */
+        .alert-danger {
+            background-color: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #FCA5A5;
+        }
+
+        .bg-light {
+            background-color: #11121a !important;
+            /* Overwrite bg-light for card body in alert */
+            color: var(--text-main);
+        }
+
+        /* Buttons */
+        .btn-light {
+            background-color: #2D3748;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-light:hover {
+            background-color: #4A5568;
+            color: white;
+            border-color: #718096;
+        }
+
+        .btn-outline-dark {
+            color: #94A3B8;
+            border-color: #475569;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #475569;
+            color: white;
+        }
+
+        /* Mobile Responsive Table (Card View) */
+        @media (max-width: 768px) {
+            .table thead {
+                display: none;
+            }
+
+            .table,
+            .table tbody,
+            .table tr,
+            .table td {
+                display: block;
+                width: 100%;
+            }
+
+            .table tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--border-color);
+                border-radius: 12px;
+                background-color: #1e202e;
+                /* Slightly lighter than card-bg */
+            }
+
+            .table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            }
+
+            .table td:last-child {
+                border-bottom: 0;
+            }
+
+            .table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 15px;
+                width: 45%;
+                padding-right: 10px;
+                text-align: left;
+                font-weight: 600;
+                color: var(--text-muted);
+            }
+
+            .header-title {
+                font-size: 1.5rem;
+            }
+
+            .header-subtitle {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
@@ -126,33 +278,55 @@
 <body>
 
     <div class="container">
-        <div class="text-center mb-4 position-relative">
-            <h1 class="header-title">BÁO CÁO DANH MỤC ĐẦU TƯ</h1>
-            <p class="header-subtitle">Ngày báo cáo: 12/12/2025 | Dữ liệu cập nhật: Đóng cửa phiên 12/12</p>
-            <button id="togglePrivacyBtn" class="btn btn-light position-absolute top-0 end-0" title="Ẩn/Hiện Số Tiền">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye"
-                    viewBox="0 0 16 16" id="eyeIcon">
-                    <path
-                        d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                </svg>
-            </button>
+        <!-- Header Section -->
+        <div class="mb-4">
+            <!-- Mobile Header: Flex Row to avoid overlap -->
+            <div class="d-md-none d-flex justify-content-between align-items-start">
+                <div>
+                    <h1 class="header-title" style="font-size: 1.4rem;">BÁO CÁO DANH MỤC</h1>
+                    <p class="header-subtitle" style="font-size: 0.8rem;">Ngày: 12/12/2025</p>
+                </div>
+                <button id="togglePrivacyBtnMobile" class="btn btn-light border shadow-sm ms-2" title="Ẩn/Hiện Số Tiền">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye"
+                        viewBox="0 0 16 16" id="eyeIconMobile">
+                        <path
+                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                        <path
+                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Desktop Header: Centered Title + Absolute Button -->
+            <div class="d-none d-md-block text-center position-relative">
+                <h1 class="header-title">BÁO CÁO DANH MỤC ĐẦU TƯ</h1>
+                <p class="header-subtitle">Ngày báo cáo: 12/12/2025 | Dữ liệu cập nhật: Đóng cửa phiên 12/12</p>
+                <button id="togglePrivacyBtn" class="btn btn-light position-absolute top-0 end-0"
+                    title="Ẩn/Hiện Số Tiền">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-eye"
+                        viewBox="0 0 16 16" id="eyeIcon">
+                        <path
+                            d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                        <path
+                            d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                    </svg>
+                </button>
+            </div>
         </div>
 
         <!-- Market Overview -->
         <div class="alert alert-danger" role="alert">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
-                        <use xlink:href="#exclamation-triangle-fill" />
-                    </svg>
+            <div
+                class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2">
+                <div class="d-flex align-items-start align-items-md-center">
                     <div>
                         <strong>Thị Trường Chung (VN-INDEX):</strong>
                         <span class="loss">1,646.89 điểm (-52.01)</span>
-                        <span class="badge bg-danger market-badge ms-2">SẬP MẠNH (CRASH)</span>
+                        <br class="d-md-none">
+                        <span class="badge bg-danger market-badge ms-0 mt-1 mt-md-0">SẬP MẠNH (CRASH)</span>
                     </div>
                 </div>
-                <button class="btn btn-sm btn-outline-dark" type="button" data-bs-toggle="collapse"
+                <button class="btn btn-sm btn-outline-dark text-nowrap" type="button" data-bs-toggle="collapse"
                     data-bs-target="#marketDetails" aria-expanded="false" aria-controls="marketDetails">
                     Xem Chi Tiết
                 </button>
@@ -174,7 +348,7 @@
 
         <!-- Portfolio Summary -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-3 mb-md-0">
                 <div class="card p-3 text-center h-100 justify-content-center"
                     style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
                     <h5>Tổng Giá Trị Hiện Tại</h5>
@@ -183,7 +357,7 @@
                         VND</small>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 mb-3 mb-md-0">
                 <div class="card p-3 text-center h-100 justify-content-center" id="plCard">
                     <h5>Tổng Lãi/Lỗ</h5>
                     <h2 id="totalPL" class="private-data" data-original="-3,302,000 VND">-3,302,000 VND</h2>
@@ -199,12 +373,12 @@
 
         <!-- Holdings Table -->
         <div class="card mb-4">
-            <div class="card-header bg-white">
+            <div class="card-header">
                 <h5 class="m-0 text-dark">Chi Tiết Danh Mục</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover mb-0">
+                    <table class="table table-dark table-hover mb-0">
                         <thead class="table-dark">
                             <tr>
                                 <th>Mã CP</th>
@@ -221,49 +395,65 @@
                             <!-- ACB -->
                             <tr class="bg-loss-light stock-row" onclick="showStockDetail('ACB')"
                                 style="cursor: pointer;">
-                                <td class="fw-bold text-decoration-underline text-primary">ACB</td>
-                                <td class="text-end private-data" data-original="400">400</td>
-                                <td class="text-end private-data" data-original="24,270">24,270</td>
-                                <td class="text-end">23,500</td>
-                                <td class="text-end private-data" data-original="9,400,000">9,400,000</td>
-                                <td class="text-end loss private-data" data-original="-308,000">-308,000</td>
-                                <td class="text-end loss">-3.17%</td>
-                                <td class="text-center"><span class="badge bg-warning text-dark">Suy Yếu</span></td>
+                                <td data-label="Mã CP" class="fw-bold text-decoration-underline text-primary">ACB</td>
+                                <td data-label="Số Lượng" class="text-end private-data" data-original="400">400</td>
+                                <td data-label="Giá Vốn" class="text-end private-data" data-original="24,270">24,270
+                                </td>
+                                <td data-label="Giá Hiện Tại" class="text-end">23,500</td>
+                                <td data-label="Giá Trị" class="text-end private-data" data-original="9,400,000">
+                                    9,400,000</td>
+                                <td data-label="Lãi/Lỗ (VND)" class="text-end loss private-data"
+                                    data-original="-308,000">-308,000</td>
+                                <td data-label="% Lãi/Lỗ" class="text-end loss">-3.17%</td>
+                                <td data-label="Trạng Thái" class="text-center"><span
+                                        class="badge bg-warning text-dark">Suy Yếu</span></td>
                             </tr>
                             <!-- MSN -->
                             <tr class="bg-loss-light stock-row" onclick="showStockDetail('MSN')"
                                 style="cursor: pointer;">
-                                <td class="fw-bold text-decoration-underline text-primary">MSN</td>
-                                <td class="text-end private-data" data-original="200">200</td>
-                                <td class="text-end private-data" data-original="77,560">77,560</td>
-                                <td class="text-end">73,500</td>
-                                <td class="text-end private-data" data-original="14,700,000">14,700,000</td>
-                                <td class="text-end loss private-data" data-original="-812,000">-812,000</td>
-                                <td class="text-end loss">-5.23%</td>
-                                <td class="text-center"><span class="badge bg-danger">BÁN</span></td>
+                                <td data-label="Mã CP" class="fw-bold text-decoration-underline text-primary">MSN</td>
+                                <td data-label="Số Lượng" class="text-end private-data" data-original="200">200</td>
+                                <td data-label="Giá Vốn" class="text-end private-data" data-original="77,560">77,560
+                                </td>
+                                <td data-label="Giá Hiện Tại" class="text-end">73,500</td>
+                                <td data-label="Giá Trị" class="text-end private-data" data-original="14,700,000">
+                                    14,700,000</td>
+                                <td data-label="Lãi/Lỗ (VND)" class="text-end loss private-data"
+                                    data-original="-812,000">-812,000</td>
+                                <td data-label="% Lãi/Lỗ" class="text-end loss">-5.23%</td>
+                                <td data-label="Trạng Thái" class="text-center"><span class="badge bg-danger">BÁN</span>
+                                </td>
                             </tr>
                             <!-- CEO -->
                             <tr class="bg-loss stock-row" onclick="showStockDetail('CEO')" style="cursor: pointer;">
-                                <td class="fw-bold text-decoration-underline text-primary">CEO</td>
-                                <td class="text-end private-data" data-original="100">100</td>
-                                <td class="text-end private-data" data-original="27,000">27,000</td>
-                                <td class="text-end">22,100</td>
-                                <td class="text-end private-data" data-original="2,210,000">2,210,000</td>
-                                <td class="text-end loss private-data" data-original="-490,000">-490,000</td>
-                                <td class="text-end loss">-18.15%</td>
-                                <td class="text-center"><span class="badge bg-danger">THÁO CHẠY</span></td>
+                                <td data-label="Mã CP" class="fw-bold text-decoration-underline text-primary">CEO</td>
+                                <td data-label="Số Lượng" class="text-end private-data" data-original="100">100</td>
+                                <td data-label="Giá Vốn" class="text-end private-data" data-original="27,000">27,000
+                                </td>
+                                <td data-label="Giá Hiện Tại" class="text-end">22,100</td>
+                                <td data-label="Giá Trị" class="text-end private-data" data-original="2,210,000">
+                                    2,210,000</td>
+                                <td data-label="Lãi/Lỗ (VND)" class="text-end loss private-data"
+                                    data-original="-490,000">-490,000</td>
+                                <td data-label="% Lãi/Lỗ" class="text-end loss">-18.15%</td>
+                                <td data-label="Trạng Thái" class="text-center"><span class="badge bg-danger">THÁO
+                                        CHẠY</span></td>
                             </tr>
                             <!-- CTD -->
                             <tr class="bg-loss-light stock-row" onclick="showStockDetail('CTD')"
                                 style="cursor: pointer;">
-                                <td class="fw-bold text-decoration-underline text-primary">CTD</td>
-                                <td class="text-end private-data" data-original="400">400</td>
-                                <td class="text-end private-data" data-original="84,230">84,230</td>
-                                <td class="text-end">80,000</td>
-                                <td class="text-end private-data" data-original="32,000,000">32,000,000</td>
-                                <td class="text-end loss private-data" data-original="-1,692,000">-1,692,000</td>
-                                <td class="text-end loss">-5.02%</td>
-                                <td class="text-center"><span class="badge bg-warning text-dark">Vi Phạm Hỗ Trợ</span>
+                                <td data-label="Mã CP" class="fw-bold text-decoration-underline text-primary">CTD</td>
+                                <td data-label="Số Lượng" class="text-end private-data" data-original="400">400</td>
+                                <td data-label="Giá Vốn" class="text-end private-data" data-original="84,230">84,230
+                                </td>
+                                <td data-label="Giá Hiện Tại" class="text-end">80,000</td>
+                                <td data-label="Giá Trị" class="text-end private-data" data-original="32,000,000">
+                                    32,000,000</td>
+                                <td data-label="Lãi/Lỗ (VND)" class="text-end loss private-data"
+                                    data-original="-1,692,000">-1,692,000</td>
+                                <td data-label="% Lãi/Lỗ" class="text-end loss">-5.02%</td>
+                                <td data-label="Trạng Thái" class="text-center"><span
+                                        class="badge bg-warning text-dark">Vi Phạm Hỗ Trợ</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -277,7 +467,7 @@
             <!-- Heatmap Section -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
-                    <div class="card-header bg-white">
+                    <div class="card-header">
                         <h5 class="m-0">Bản Đồ Nhiệt Danh Mục (Portfolio Heatmap)</h5>
                         <small class="text-muted">Diện tích = Tỷ trọng vốn | Màu sắc = Mức độ Lãi/Lỗ</small>
                     </div>
@@ -315,7 +505,7 @@
             <!-- Performance Chart Section -->
             <div class="col-md-6 mb-4">
                 <div class="card h-100">
-                    <div class="card-header bg-white">
+                    <div class="card-header">
                         <h5 class="m-0">Biểu Đồ Hiệu Suất (Profit/Loss)</h5>
                     </div>
                     <div class="card-body">
@@ -341,7 +531,7 @@
             </ul>
         </div>
 
-        <div class="text-center mt-5 mb-5 fst-italic text-muted">
+        <div class="text-center mt-5 mb-5 fst-italic text-white">
             "Trong đầu tư, quan trọng không phải là bạn kiếm được bao nhiêu khi đúng, mà là bạn mất bao nhiêu khi sai."
             - George Soros
         </div>
@@ -368,6 +558,10 @@
     </div>
 
     <script>
+        // --- Dark Mode Configuration for Charts ---
+        Chart.defaults.color = '#94A3B8';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+
         // --- Data Configuration ---
         const portfolioData = {
             labels: ['ACB', 'MSN', 'CEO', 'CTD'],
@@ -432,8 +626,12 @@
                 },
                 scales: {
                     x: {
-                        grid: { color: '#f0f0f0' },
-                        ticks: { callback: function (value) { return value + '%' } }
+                        grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                        ticks: { callback: function (value) { return value + '%' }, color: '#94A3B8' }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { color: '#E2E8F0', font: { weight: 'bold' } }
                     }
                 }
             }
@@ -509,36 +707,47 @@
 
         // --- Toggle Privacy Logic ---
         const toggleBtn = document.getElementById('togglePrivacyBtn');
-        const eyeIcon = document.getElementById('eyeIcon');
+        const toggleBtnMobile = document.getElementById('togglePrivacyBtnMobile'); // Mobile Button
+        const eyeIcon = document.getElementById('eyeIcon'); // Desktop Icon
+        // const eyeIconMobile = document.getElementById('eyeIconMobile'); // Mobile Icon (We can use class query for simplicity)
+
         let isHidden = false;
 
-        toggleBtn.addEventListener('click', () => {
+        function togglePrivacy() {
             isHidden = !isHidden;
             const elements = document.querySelectorAll('.private-data');
+            const svgContentEye = `
+                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+            `;
+            const svgContentSlash = `
+                 <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
+                 <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
+                 <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
+            `;
 
             if (isHidden) {
                 // Hide data
                 elements.forEach(el => {
                     el.textContent = '****';
                 });
-                // Change icon to eye-slash
-                eyeIcon.innerHTML = `
-                <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709z"/>
-                <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829l.822.822zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829z"/>
-                <path d="M3.35 5.47c-.18.16-.353.322-.518.487A13.134 13.134 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7.029 7.029 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12-.708.708z"/>
-            `;
+                // Change icons
+                if (toggleBtn) toggleBtn.querySelector('svg').innerHTML = svgContentSlash;
+                if (toggleBtnMobile) toggleBtnMobile.querySelector('svg').innerHTML = svgContentSlash;
+
             } else {
                 // Show data
                 elements.forEach(el => {
                     el.textContent = el.getAttribute('data-original');
                 });
-                // Change icon back to eye
-                eyeIcon.innerHTML = `
-                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-            `;
+                // Change icons
+                if (toggleBtn) toggleBtn.querySelector('svg').innerHTML = svgContentEye;
+                if (toggleBtnMobile) toggleBtnMobile.querySelector('svg').innerHTML = svgContentEye;
             }
-        });
+        }
+
+        if (toggleBtn) toggleBtn.addEventListener('click', togglePrivacy);
+        if (toggleBtnMobile) toggleBtnMobile.addEventListener('click', togglePrivacy);
     </script>
 
 </body>
