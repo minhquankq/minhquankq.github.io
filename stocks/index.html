@@ -1,144 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stock Analytics | Quan Vo</title>
-    <meta
-      name="description"
-      content="Daily stock market reports and analysis."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../style.css" />
-    <style>
-      /* Specific overrides for the list view */
-      .report-list {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
-        width: 100%;
-        margin-top: 2rem;
-      }
 
-      .report-card {
-        background: var(--glass-bg);
-        border: 1px solid var(--glass-border);
-        border-radius: 16px;
-        padding: 1.5rem;
-        transition: all var(--transition-speed);
-        text-decoration: none;
-        color: var(--text-primary);
-        backdrop-filter: blur(10px);
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Analytics | Quan Vo</title>
+  <meta name="description" content="Daily stock market reports and analysis." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <style>
+    /* Specific overrides for the list view */
+    .report-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      margin-top: 2rem;
+    }
 
-      .report-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--accent-primary);
-        background: rgba(255, 255, 255, 0.08);
-      }
+    .report-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: all var(--transition-speed);
+      text-decoration: none;
+      color: var(--text-primary);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-      .report-date {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-        font-weight: 500;
-      }
+    .report-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-      .report-title {
-        font-size: 1.25rem;
-        font-weight: 600;
-      }
+    .report-date {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
 
-      .breadcrumb {
-        margin-bottom: 2rem;
-        color: var(--text-secondary);
-      }
+    .report-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
 
-      .breadcrumb a {
-        color: var(--accent-primary);
-        text-decoration: none;
-      }
+    .breadcrumb {
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+    }
 
-      .breadcrumb a:hover {
-        text-decoration: underline;
-      }
-    </style>
-  </head>
+    .breadcrumb a {
+      color: var(--accent-primary);
+      text-decoration: none;
+    }
 
-  <body>
-    <header>
-      <div class="logo">quan vo.</div>
-      <nav>
-        <ul>
-          <li><a href="../index.html">Home</a></li>
-        </ul>
-      </nav>
-    </header>
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
 
-    <main>
-      <div class="hero" style="display: block; max-width: 1200px">
-        <div class="breadcrumb">
-          <a href="../index.html">← Back to Home</a>
-        </div>
+<body>
+  <header>
+    <div class="logo">quan vo.</div>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Home</a></li>
+      </ul>
+    </nav>
+  </header>
 
-        <h1 class="gradient-text">Daily Market Reports</h1>
-        <p
-          style="
+  <main>
+    <div class="hero" style="display: block; max-width: 1200px">
+      <div class="breadcrumb">
+        <a href="../index.html">← Back to Home</a>
+      </div>
+
+      <h1 class="gradient-text">Daily Market Reports</h1>
+      <p style="
             color: var(--text-secondary);
             max-width: 600px;
             margin-bottom: 3rem;
-          "
-        >
-          Archive of daily analysis for my stock portfolio, including portfolio
-          performance, technical indicators, and trend forecasts.
-        </p>
+          ">
+        Archive of daily analysis for my stock portfolio, including portfolio
+        performance, technical indicators, and trend forecasts.
+      </p>
 
-        <div class="report-list">
-          <a href="report-2025-Dec-19.html" class="report-card">
-            <span class="report-date">December 19, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+      <div class="report-list">
+        <a href="report-2025-Dec-22.html" class="report-card">
+          <span class="report-date">December 22, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-17.html" class="report-card">
-            <span class="report-date">December 17, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+        <a href="report-2025-Dec-19.html" class="report-card">
+          <span class="report-date">December 19, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-16.html" class="report-card">
-            <span class="report-date">December 16, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+        <a href="report-2025-Dec-17.html" class="report-card">
+          <span class="report-date">December 17, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-15.html" class="report-card">
-            <span class="report-date">December 15, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+        <a href="report-2025-Dec-16.html" class="report-card">
+          <span class="report-date">December 16, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-12.html" class="report-card">
-            <span class="report-date">December 12, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+        <a href="report-2025-Dec-15.html" class="report-card">
+          <span class="report-date">December 15, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-11.html" class="report-card">
-            <span class="report-date">December 11, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
+        <a href="report-2025-Dec-12.html" class="report-card">
+          <span class="report-date">December 12, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
 
-          <a href="report-2025-Dec-10.html" class="report-card">
-            <span class="report-date">December 10, 2025</span>
-            <span class="report-title">My Analysis Report</span>
-          </a>
-        </div>
+        <a href="report-2025-Dec-11.html" class="report-card">
+          <span class="report-date">December 11, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
+
+        <a href="report-2025-Dec-10.html" class="report-card">
+          <span class="report-date">December 10, 2025</span>
+          <span class="report-title">My Analysis Report</span>
+        </a>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <script src="../script.js"></script>
-  </body>
+  <script src="../script.js"></script>
+</body>
+
 </html>

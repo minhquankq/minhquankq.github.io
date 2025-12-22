@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio Report - 2025-Dec-23</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-green: #00ff9d;
+            --neon-red: #ff4d4d;
+            --market-up: #4ade80;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: #0f172a;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .trend-up {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px rgba(0, 255, 157, 0.3);
+        }
+
+        .trend-down {
+            color: var(--neon-red);
+            text-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal:target {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal:target .modal-content {
+            transform: scale(1);
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <header class="flex justify-between items-end pb-4 border-b border-white/10">
+            <div>
+                <h2 class="text-sm uppercase tracking-widest text-blue-400 mb-1">Portfolio Analytics</h2>
+                <h1
+                    class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-glow">
+                    MY PORTFOLIO</h1>
+            </div>
+            <div class="text-right">
+                <div class="text-sm text-gray-400">Report Date</div>
+                <div class="text-2xl font-light">2025 <span class="text-blue-400 font-bold">Dec 22</span></div>
+            </div>
+        </header>
+
+        <!-- Market Summary -->
+        <section class="glass-panel p-6">
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        Thị Trường (VN-INDEX)
+                    </h3>
+                    <div class="text-3xl font-bold trend-up mb-1">1,751.03 <span class="text-lg">▲ 46.72 (+2.74%)</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Thị trường ghi nhận phiên tăng kỷ lục, chính thức vượt mốc 1.750 điểm. Dòng tiền "Santa Clause
+                        Rally" nhập cuộc mạnh mẽ.
+                        Khối ngoại mua ròng nhẹ (trừ thỏa thuận VNM). Thanh khoản đạt hơn 30k tỷ.
+                        <br><span class="text-blue-300 italic">Tin nổi bật:</span> Hòa Phát đầu tư KCN Hưng Yên, FTSE
+                        Russell nâng hạng.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3 h-32 relative">
+                    <!-- Mini Chart Simulation -->
+                    <canvas id="vnindexChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Asset Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Value -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/20 rounded-full blur-xl"></div>
+                <div class="text-gray-400 text-sm uppercase tracking-wider mb-2">Tổng Tài Sản (VND)</div>
+                <div class="text-4xl font-bold text-white mb-2">58,120,000</div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-xs bg-red-500/20 text-red-400 border border-red-500/30">
+                        Initial: 58,912,000
+                    </span>
+                </div>
+            </div>
+
+            <!-- Total P/L -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-red-500/20 rounded-full blur-xl"></div>
+                <div class="text-gray-400 text-sm uppercase tracking-wider mb-2">Tổng Lãi/Lỗ</div>
+                <div class="text-4xl font-bold trend-down mb-2">-792,000</div>
+                <div class="text-lg text-red-400 font-medium">▼ -1.34%</div>
+            </div>
+
+            <!-- Chart -->
+            <div class="glass-card p-4 rounded-2xl flex items-center justify-center relative">
+                <div style="width: 200px; height: 130px;">
+                    <canvas id="assetChart"></canvas>
+                </div>
+                <div class="absolute bottom-2 right-4 text-xs text-gray-500 italic">Allocation by Value</div>
+            </div>
+        </div>
+
+        <!-- Portfolio Details -->
+        <section>
+            <h3 class="text-2xl font-bold mb-6 border-l-4 border-blue-500 pl-4">Chi Tiết Danh Mục</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- ACB Card -->
+                <a href="#modal-ACB" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">ACB</h4>
+                            <span class="text-xs text-gray-400">Banking</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold border border-green-500/30">LÃI
+                            NHẸ</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">24.27</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">24.30</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-up">+0.12%</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- MSN Card -->
+                <a href="#modal-MSN" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">MSN</h4>
+                            <span class="text-xs text-gray-400">Consumer</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">CẢNH
+                            BÁO</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">77.56</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">76.00</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-down">-2.01%</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- CTD Card -->
+                <a href="#modal-CTD" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">CTD</h4>
+                            <span class="text-xs text-gray-400">Construction</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold border border-yellow-500/30">HỒI
+                            PHỤC</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">84.23</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">83.00</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-down">-1.46%</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- Recommendation Section -->
+        <section class="glass-panel p-8 mt-8 border-l-4 border-purple-500">
+            <h2 class="text-2xl font-bold mb-4 text-purple-300">ĐÁNH GIÁ & KHUYẾN NGHỊ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Tổng Quan</h4>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        Mặc dù thị trường chung tăng mạnh (+2.74%), danh mục hiện tại đang ghi nhận mức lỗ nhẹ (-1.34%).
+                        Điều này cho thấy sự phân hóa mạnh của dòng tiền, tập trung chủ yếu vào các mã trụ (VHM, VIC) mà
+                        danh mục không nắm giữ. Tuy nhiên, cổ phiếu nắm giữ (CTD, MSN) đang ở vùng giá hấp dẫn và có dấu
+                        hiệu hồi phục kỹ thuật.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            <span>Kịch bản tích cực (60%): VN-INDEX giữ trên 1750, dòng tiền lan tỏa sang Midcap (CTD,
+                                MSN). P/L sẽ sớm chuyển xanh.</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                            <span>Kịch bản tiêu cực (40%): Áp lực chốt lời T+ ngắn hạn khiến VN-INDEX test lại 1720. Cần
+                                quản trị rủi ro ở mốc hỗ trợ của MSN (73.x).</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Hành Động Khuyến Nghị</h4>
+                    <ul class="space-y-3">
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-green-400">ACB</strong>
+                                <span class="text-xs bg-gray-700 px-2 rounded text-gray-300">NẮM GIỮ</span>
+                            </div>
+                            <p class="text-xs text-gray-400">Khối ngoại bán ròng nhưng xu hướng ngành Bank vẫn khỏe. Hỗ
+                                trợ cứng quanh vùng 23.5. Mục tiêu ngắn hạn: 25.x</p>
+                        </li>
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-yellow-400">CTD</strong>
+                                <span class="text-xs bg-gray-700 px-2 rounded text-gray-300">QUAN SÁT/MUA THÊM</span>
+                            </div>
+                            <p class="text-xs text-gray-400">Đà hồi phục mạnh (+4.66%) hôm nay xác nhận vùng đáy ngắn
+                                hạn. Nếu vượt 85 với vôn lớn, cân nhắc gia tăng để hạ giá vốn.</p>
+                        </li>
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-blue-400">MSN</strong>
+                                <span class="text-xs bg-gray-700 px-2 rounded text-gray-300">KIÊN NHẪN</span>
+                            </div>
+                            <p class="text-xs text-gray-400">Đang ở vùng tích lũy. Mùa mua sắm cuối năm sẽ là động lực.
+                                Chưa nên cắt lỗ tại đây.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Slogan -->
+        <div class="text-center py-8 opacity-60">
+            <h3 class="text-xl font-thin italic">"Opportunities come to those who are prepared."</h3>
+            <div class="text-xs mt-2 text-gray-500">Generated by Portlytics AI</div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- ACB Modal -->
+    <div id="modal-ACB" class="modal">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4">
+            <a href="#" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</a>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">ACB - Ngân hàng Á Châu</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">400 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-green-400">9,720,000 VND</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                Cổ phiếu đang giao dịch trên đường MA20, cho thấy xu hướng ngắn hạn tích cực.
+                RSI ở mức trung tính (50-55), dư địa tăng còn nhiều.
+                <br>Lực bán ròng của khối ngoại (-73 tỷ) là điểm trừ duy nhất cần lưu ý.
+            </p>
+            <div class="flex gap-2">
+                <span
+                    class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support:
+                    23.5</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Resistance:
+                    25.5</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MSN Modal -->
+    <div id="modal-MSN" class="modal">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4">
+            <a href="#" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</a>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">MSN - Masan Group</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">200 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-red-400">15,200,000 VND</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                MSN đang nỗ lực tạo đáy quanh vùng 74-75. Phiên hôm nay đóng cửa 76.0 là tín hiệu tích cực nhẹ.
+                MACD có dấu hiệu thu hẹp khoảng cách phân kỳ âm. Cần một phiên bùng nổ vượt 78 để xác nhận đảo chiều.
+            </p>
+            <div class="flex gap-2">
+                <span
+                    class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support:
+                    74.0</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Resistance:
+                    80.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTD Modal -->
+    <div id="modal-CTD" class="modal">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4">
+            <a href="#" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">&times;</a>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">CTD - Coteccons</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">400 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-yellow-400">33,200,000 VND</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                CTD thể hiện sức mạnh ấn tượng hôm nay khi bật tăng từ hỗ trợ 79-80.
+                Mẫu hình nến bao phủ tăng (Bullish Engulfing) xuất hiện tại đáy ngắn hạn.
+                Volume chưa quá đột biến nhưng giá tăng dứt khoát.
+            </p>
+            <div class="flex gap-2">
+                <span
+                    class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support:
+                    79.0</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Resistance:
+                    87.0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for Charts
+        const portfolioData = {
+            labels: ['ACB', 'MSN', 'CTD'],
+            data: [9720000, 15200000, 33200000],
+            colors: ['#4ade80', '#60a5fa', '#facc15']
+        };
+
+        // Initialize Asset Chart
+        const ctx = document.getElementById('assetChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: portfolioData.labels,
+                datasets: [{
+                    data: portfolioData.data,
+                    backgroundColor: portfolioData.colors,
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#94a3b8', font: { family: 'Outfit' } }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Initialize VNINDEX Mini Chart (Simulated Data based on trend)
+        const vnCtx = document.getElementById('vnindexChart').getContext('2d');
+
+        // Simulated last 7 days from provided history for visual context
+        const vnData = [1645.87, 1647.42, 1680.18, 1675.54, 1678.72, 1717.42, 1751.03];
+        const vnLabels = ['15/12', '16/12', '17/12', '18/12', '19/12', 'Today Open', 'Now'];
+
+        new Chart(vnCtx, {
+            type: 'line',
+            data: {
+                labels: vnLabels,
+                datasets: [{
+                    label: 'VN-INDEX',
+                    data: vnData,
+                    borderColor: '#4ade80',
+                    backgroundColor: 'rgba(74, 222, 128, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
