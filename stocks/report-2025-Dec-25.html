@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio Report - 2025-Dec-25</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-green: #00ff9d;
+            --neon-red: #ff4d4d;
+            --market-up: #4ade80;
+            --market-down: #f87171;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            background-color: #0f172a;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            min-height: 100vh;
+        }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .trend-up {
+            color: var(--neon-green);
+            text-shadow: 0 0 8px rgba(0, 255, 157, 0.3);
+        }
+
+        .trend-down {
+            color: var(--neon-red);
+            text-shadow: 0 0 8px rgba(255, 77, 77, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .panic-alert {
+            background: linear-gradient(135deg, rgba(248, 113, 113, 0.2), rgba(220, 38, 38, 0.1));
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 10px rgba(248, 113, 113, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(248, 113, 113, 0.4); }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto space-y-8">
+        <!-- Header -->
+        <header class="flex justify-between items-end pb-4 border-b border-white/10">
+            <div>
+                <h2 class="text-sm uppercase tracking-widest text-blue-400 mb-1">Portfolio Analytics</h2>
+                <h1
+                    class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400 text-glow">
+                    MY PORTFOLIO</h1>
+            </div>
+            <div class="text-right">
+                <div class="text-sm text-gray-400">Report Date</div>
+                <div class="text-2xl font-light">2025 <span class="text-blue-400 font-bold">Dec 25</span></div>
+            </div>
+        </header>
+
+        <!-- Market Summary - Panic Alert -->
+        <section class="glass-panel p-6 panic-alert">
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                        Thị Trường (VN-INDEX)
+                        <span class="px-2 py-1 rounded-full bg-red-500/30 text-red-400 text-xs font-bold border border-red-500/50 ml-2">📉 GIẢM SỐC</span>
+                    </h3>
+                    <div class="text-3xl font-bold trend-down mb-1">1,742.85 <span class="text-lg">▼ -39.97 (-2.24%)</span>
+                    </div>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        <span class="text-red-400 font-semibold">⚠️ Cú rơi "thẳng đứng":</span> VN-Index mất gần 40 điểm vào cuối phiên, đặc biệt là áp lực bán tháo ATC.
+                        <br><span class="text-yellow-300">💥 Tâm điểm:</span> Bộ ba họ Vin (VIC, VHM, VRE) giảm sàn sau tin rút khỏi dự án đường sắt cao tốc.
+                        <br><span class="text-blue-300 italic">Điểm sáng le lói: Khối ngoại tiếp tục MUA ròng phiên thứ 5 liên tiếp (VHM, STB, MCH).</span>
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3 h-32 relative">
+                    <canvas id="vnindexChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Asset Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Total Value -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/20 rounded-full blur-xl"></div>
+                <div class="text-gray-400 text-sm uppercase tracking-wider mb-2">Tổng Tài Sản (VND)</div>
+                <div class="text-4xl font-bold text-white mb-2">57,410,000</div>
+                <div class="flex items-center gap-2">
+                    <span class="px-2 py-0.5 rounded text-xs bg-red-500/20 text-red-400 border border-red-500/30">
+                        Vốn: 58,908,200
+                    </span>
+                </div>
+            </div>
+
+            <!-- Total P/L -->
+            <div class="glass-card p-6 rounded-2xl flex flex-col justify-center relative overflow-hidden">
+                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-red-500/20 rounded-full blur-xl"></div>
+                <div class="text-gray-400 text-sm uppercase tracking-wider mb-2">Tổng Lãi/Lỗ</div>
+                <div class="text-4xl font-bold trend-down mb-2">-1,498,200</div>
+                <div class="text-lg text-red-400 font-medium">▼ -2.54%</div>
+            </div>
+
+            <!-- Chart -->
+            <div class="glass-card p-4 rounded-2xl flex items-center justify-center relative">
+                <div style="width: 200px; height: 130px;">
+                    <canvas id="assetChart"></canvas>
+                </div>
+                <div class="absolute bottom-2 right-4 text-xs text-gray-500 italic">Allocation by Value</div>
+            </div>
+        </div>
+
+        <!-- Daily Change Alert -->
+        <section class="glass-panel p-4 border-l-4 border-red-500">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">📊</span>
+                <div>
+                    <div class="text-sm text-gray-400">Biến động trong ngày 25/12 - ⚠️ Áp lực điều chỉnh diện rộng</div>
+                    <div class="text-lg">
+                        <span class="text-red-400 font-bold">ACB: -1.23%</span> |
+                        <span class="text-green-400 font-bold">MSN: +0.13%</span> |
+                        <span class="text-red-400 font-bold">CTD: -1.02%</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio Details -->
+        <section>
+            <h3 class="text-2xl font-bold mb-6 border-l-4 border-blue-500 pl-4">Chi Tiết Danh Mục</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- ACB Card -->
+                <div onclick="openModal('modal-ACB')" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">ACB</h4>
+                            <span class="text-xs text-gray-400">Banking • 400 cp</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-bold border border-yellow-500/30">ĐIỀU CHỈNH</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">24.27</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">24.00</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-down">-1.11%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MSN Card -->
+                <div onclick="openModal('modal-MSN')" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">MSN</h4>
+                            <span class="text-xs text-gray-400">Consumer • 200 cp</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold border border-blue-500/30">KHỎE HƠN TT</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">77.56</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">76.30</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-down">-1.62%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTD Card -->
+                <div onclick="openModal('modal-CTD')" class="glass-card p-6 rounded-xl block group cursor-pointer no-underline">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-2xl font-bold text-white group-hover:text-blue-400 transition">CTD</h4>
+                            <span class="text-xs text-gray-400">Construction • 420 cp</span>
+                        </div>
+                        <span
+                            class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">SUY YẾU</span>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Giá vốn</span>
+                            <span class="font-mono">80.21</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-400">Thị giá</span>
+                            <span class="font-mono text-white">77.50</span>
+                        </div>
+                        <div class="h-px bg-white/10 my-2"></div>
+                        <div class="flex justify-between items-end">
+                            <span class="text-gray-400 text-xs">P/L Estimation</span>
+                            <span class="text-xl font-bold trend-down">-3.38%</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- P/L Performance Chart -->
+        <section class="glass-panel p-6">
+            <h3 class="text-xl font-semibold mb-4">Biểu Đồ Hiệu Suất (Profit/Loss)</h3>
+            <div style="height: 200px;">
+                <canvas id="plChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Recommendation Section -->
+        <section class="glass-panel p-8 mt-8 border-l-4 border-purple-500">
+            <h2 class="text-2xl font-bold mb-4 text-purple-300">ĐÁNH GIÁ & KHUYẾN NGHỊ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Tổng Quan</h4>
+                    <p class="text-gray-300 mb-4 leading-relaxed">
+                        Thị trường trải qua phiên giảm sốc mạnh nhất trong 2 tuần (-39.97 điểm), tuy nhiên danh mục của bạn thể hiện sự <span class="text-blue-400 font-bold">chống chịu khá tốt</span> so với đà giảm chung.
+                        <br><br>
+                        <span class="text-yellow-400">🛡️ Phòng thủ:</span> Trong khi VN-Index bốc hơi -2.24%, danh mục chỉ chịu mức lỗ tăng nhẹ lên -2.54%. MSN thể hiện sức mạnh đáng kinh ngạc khi giữ được sắc xanh (+0.1%). ACB điều chỉnh ít hơn VN30.
+                        <br><br>
+                        <span class="text-red-400">⚠️ Rủi ro hệ thống:</span> Tâm lý hoảng loạn từ nhóm Vin có thể gây hiệu ứng domino trong 1-2 phiên tới. Cần ưu tiên quản trị rủi ro ngay lúc này thay vì bắt đáy sớm.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-2 text-sm text-gray-400 bg-red-500/10 p-3 rounded-lg">
+                            <span class="w-3 h-3 rounded-full bg-red-500 mt-1 flex-shrink-0"></span>
+                            <span><strong class="text-red-300">Kịch bản tiêu cực (60%):</strong> Quán tính giảm còn tiếp diễn đầu phiên mai, test vùng hỗ trợ 1,720-1,730. Nếu thủng mốc này, rủi ro điều chỉnh sâu về 1,700 là hiện hữu.</span>
+                        </div>
+                        <div class="flex items-start gap-2 text-sm text-gray-400 bg-yellow-500/10 p-3 rounded-lg">
+                            <span class="w-3 h-3 rounded-full bg-yellow-500 mt-1 flex-shrink-0"></span>
+                            <span><strong class="text-yellow-300">Kịch bản hồi phục (30%):</strong> Lực cầu bắt đáy nhập cuộc tại vùng 1,730 (MA20 cũ/hỗ trợ tâm lý), VN-Index rút chân tạo nến Pinbar. Danh mục hồi phục nhẹ.</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold text-white mb-2">Hành Động Khuyến Nghị</h4>
+                    <ul class="space-y-3">
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-yellow-400">ACB</strong>
+                                <span class="text-xs bg-yellow-700/50 px-2 rounded text-yellow-200">QUAN SÁT CHẶT</span>
+                            </div>
+                            <p class="text-xs text-gray-400">
+                                Mất mốc hỗ trợ ngắn hạn 24.15 nhưng vol bán chưa quá đột biến. Hỗ trợ cứng tại 23.8-23.9.
+                                Nếu thủng 23.8, cân nhắc hạ tỷ trọng để bảo toàn vốn.
+                            </p>
+                        </li>
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-green-400">MSN</strong>
+                                <span class="text-xs bg-green-700/50 px-2 rounded text-green-200">NẮM GIỮ (TÍCH CỰC)</span>
+                            </div>
+                            <p class="text-xs text-gray-400">
+                                "Ngôi sao sáng" khi đi ngược thị trường. Dòng tiền đỡ giá rất tốt quanh 76
+                                Tiếp tục nắm giữ. Đây là mã phòng thủ tốt nhất trong danh mục hiện tại.
+                            </p>
+                        </li>
+                        <li class="bg-white/5 p-3 rounded-lg border border-white/5">
+                            <div class="flex justify-between mb-1">
+                                <strong class="text-red-400">CTD</strong>
+                                <span class="text-xs bg-red-700/50 px-2 rounded text-red-200">⚠️ CẢNH BÁO</span>
+                            </div>
+                            <p class="text-xs text-gray-400">
+                                Giảm -1.02%, mất mốc 78. Áp lực bán lan rộng nhóm BĐS.
+                                <strong class="text-red-300">Critical Level: 75.0</strong>. Nếu VN-Index tiếp tục xấu và CTD thủng 75, bắt buộc phải cắt lỗ (Stoploss) kỷ luật.
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Analysis -->
+        <section class="glass-panel p-6 border-l-4 border-red-500">
+            <h3 class="text-xl font-semibold mb-4 text-red-300">⚠️ Phân Tích Rủi Ro & Kỹ Thuật</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-2">Thị trường chung</h4>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• <span class="text-red-400">Cây nến Marubozu đỏ đặc:</span> Cho thấy phe bán hoàn toàn kiểm soát, tâm lý cực kỳ tiêu cực.</li>
+                        <li>• <span class="text-yellow-400">Hiệu ứng Call Margin?</span> Nếu đà giảm tiếp diễn, áp lực giải chấp có thể xuất hiện vào phiên chiều mai.</li>
+                        <li>• VN30 thủng mốc 2,000 điểm là tín hiệu xấu cho xu hướng ngắn hạn.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm font-bold text-white mb-2">Mức kỹ thuật quan trọng</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center bg-green-500/10 p-2 rounded">
+                            <span class="text-sm text-gray-300">Kháng cự gần</span>
+                            <span class="font-mono text-green-400 font-bold">1,780</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-yellow-500/10 p-2 rounded opacity-50">
+                            <span class="text-sm text-gray-300 border-b border-gray-500 line-through">Hỗ trợ 1,750</span>
+                            <span class="font-mono text-yellow-400 font-bold line-through">THỦNG</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-red-500/10 p-2 rounded">
+                            <span class="text-sm text-gray-300">Hỗ trợ cứng (MA50)</span>
+                            <span class="font-mono text-red-400 font-bold">1,710 - 1,720</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer / Slogan -->
+        <div class="text-center py-8 opacity-60">
+            <h3 class="text-xl font-thin italic">"Trong cơn bão, người thủy thủ giỏi không phải kẻ cố gắng điều khiển gió, mà là người biết điều chỉnh cánh buồm - Quản trị rủi ro là trên hết."</h3>
+            <div class="text-xs mt-2 text-gray-500">Generated by Portlytics AI • 25/12/2025 🎄</div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- ACB Modal -->
+    <div id="modal-ACB" class="modal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-ACB')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl bg-transparent border-none cursor-pointer">&times;</button>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">ACB - Ngân hàng Á Châu</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">400 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-yellow-400">9,600,000 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Vốn đầu tư</div>
+                    <div class="font-mono">9,708,000 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Lãi/Lỗ</div>
+                    <div class="font-mono text-red-400">-108,000 VND (-1.11%)</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật (25/12)</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                <strong>Diễn biến:</strong> Đóng cửa 24.0 (-1.23%). Bị bán theo đà chung của nhóm Bank. Tuy nhiên, lực bán không quá ồ ạt như các mã BĐS.
+                <br><br>
+                <strong>Xu hướng:</strong> Quay lại test vùng nền tích lũy cũ. Mất MA20 ngắn hạn. RSI quay đầu giảm về 48.
+                <br><br>
+                <strong>Hành động:</strong> Quan sát vùng hỗ trợ 23.8. Nếu giữ được mốc này thì vẫn có thể nắm giữ chờ hồi phục.
+            </p>
+            <div class="flex gap-2 flex-wrap">
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support: 23.8</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Resistance: 24.5</span>
+                <span class="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded text-sm border border-yellow-500/30">⚠️ Theo dõi</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MSN Modal -->
+    <div id="modal-MSN" class="modal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-MSN')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl bg-transparent border-none cursor-pointer">&times;</button>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">MSN - Masan Group</h2>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">200 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-white">15,260,000 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Vốn đầu tư</div>
+                    <div class="font-mono">15,512,000 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Lãi/Lỗ</div>
+                    <div class="font-mono text-red-400">-252,000 VND (-1.62%)</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật (25/12)</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                <strong>Diễn biến:</strong> Đóng cửa 76.3 (+0.1%). Một trong số ít mã Bluechip giữ được sắc xanh. Thể hiện ý chí của dòng tiền lớn đỡ giá rất rõ.
+                <br><br>
+                <strong>Sức mạnh:</strong> "Lì lợm" trước áp lực bán tháo. Câu chuyện MCH lên sàn và tiêu dùng cuối năm đang là bệ đỡ tâm lý vững chắc.
+                <br><br>
+                <strong>Hành động:</strong> Ưu tiên nắm giữ. Đây là cổ phiếu phòng thủ tốt nhất danh mục lúc này.
+            </p>
+            <div class="flex gap-2 flex-wrap">
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support: 75.0</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Resistance: 78.0</span>
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">✅ Rất khỏe</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTD Modal -->
+    <div id="modal-CTD" class="modal" onclick="closeModalOnBackdrop(event)">
+        <div class="modal-content glass-panel p-8 w-full max-w-2xl relative mx-4 max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-CTD')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl bg-transparent border-none cursor-pointer">&times;</button>
+            <h2 class="text-3xl font-bold text-blue-400 mb-2">CTD - Coteccons</h2>
+            <div class="bg-blue-500/20 p-3 rounded mb-4 border border-blue-500/30">
+                <div class="text-blue-300 text-sm font-semibold">📋 Cập nhật</div>
+                <div class="text-xs text-gray-400 mt-1">SL: 420 cp | Giá vốn: 80.21 (ngàn đồng)</div>
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Khối lượng</div>
+                    <div class="font-mono">420 cp</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Giá trị hiện tại</div>
+                    <div class="font-mono text-yellow-400">32,550,000 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Vốn đầu tư</div>
+                    <div class="font-mono">33,688,200 VND</div>
+                </div>
+                <div class="bg-white/5 p-3 rounded">
+                    <div class="text-gray-400 text-xs">Lãi/Lỗ</div>
+                    <div class="font-mono text-red-400">-1,138,200 VND (-3.38%)</div>
+                </div>
+            </div>
+            <h3 class="text-lg font-semibold mb-2 text-white">Phân Tích Kỹ Thuật (25/12)</h3>
+            <p class="text-gray-300 text-sm mb-4">
+                <strong>Diễn biến:</strong> Đóng cửa 77.5 (-1.02%). Mặc dù giảm điểm nhưng mức giảm thấp hơn nhiều so với các mã BĐS khác (nhiều mã giảm sàn).
+                <br><br>
+                <strong>Rủi ro:</strong> Nhóm Xây dựng/BĐS đang là tâm điểm bị bán tháo do tin tức tiêu cực từ Vin. CTD có thể bị ảnh hưởng chéo.
+                <br><br>
+                <strong>Hành động:</strong> Theo dõi sát mốc 75. Nếu thị trường tiếp tục xấu và CTD gãy 75 -> Cắt lỗ. Nếu giữ được -> Nắm giữ chờ hồi phục.
+            </p>
+            <div class="flex gap-2 flex-wrap">
+                <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded text-sm border border-green-500/30">Support: 75.0</span>
+                <span class="px-3 py-1 bg-red-500/20 text-red-400 rounded text-sm border border-red-500/30">Stoploss: < 75.0</span>
+                <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded text-sm border border-orange-500/30">⚠️ Thận trọng</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal Functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Trigger animation for modal content if wanted
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnBackdrop(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    modal.classList.remove('active');
+                });
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Data for Charts
+        const portfolioData = {
+            labels: ['ACB', 'MSN', 'CTD'],
+            data: [9600000, 15260000, 32550000],
+            colors: ['#facc15', '#4ade80', '#f87171']
+        };
+
+        // Initialize Asset Chart
+        const ctx = document.getElementById('assetChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: portfolioData.labels,
+                datasets: [{
+                    data: portfolioData.data,
+                    backgroundColor: portfolioData.colors,
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: '#94a3b8', font: { family: 'Outfit' } }
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+
+        // Initialize VNINDEX Mini Chart (Last 7 trading days)
+        const vnCtx = document.getElementById('vnindexChart').getContext('2d');
+        const vnData = [1704.31, 1751.03, 1772.15, 1782.82, 1742.85];
+        const vnLabels = ['19/12', '22/12', '23/12', '24/12', '25/12'];
+
+        new Chart(vnCtx, {
+            type: 'line',
+            data: {
+                labels: vnLabels,
+                datasets: [{
+                    label: 'VN-INDEX',
+                    data: vnData,
+                    borderColor: '#f87171',
+                    backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 2,
+                    pointBackgroundColor: '#f87171'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { display: false },
+                    y: { display: false }
+                }
+            }
+        });
+
+        // Initialize P/L Chart
+        const plCtx = document.getElementById('plChart').getContext('2d');
+        new Chart(plCtx, {
+            type: 'bar',
+            data: {
+                labels: ['ACB', 'MSN', 'CTD'],
+                datasets: [{
+                    label: 'Profit/Loss (%)',
+                    data: [-1.11, -1.62, -3.38],
+                    backgroundColor: ['#facc15', '#4ade80', '#f87171'],
+                    borderRadius: 8,
+                    borderSkipped: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false, color: 'rgba(255,255,255,0.1)' },
+                        ticks: { color: '#94a3b8' }
+                    },
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: {
+                            color: '#94a3b8',
+                            callback: function(value) { return value + '%'; }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
