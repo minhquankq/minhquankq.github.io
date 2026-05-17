@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="circuit_blue" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00CFFF"/> <!-- Xanh lam điện tươi sáng -->
+      <stop offset="50%" stop-color="#00A2E2"/> <!-- Xanh trung tính -->
+      <stop offset="100%" stop-color="#005AAB"/> <!-- Xanh đậm -->
+    </linearGradient>
+    <linearGradient id="nodes_blue" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00E6FF"/> <!-- Xanh ngọc phát sáng -->
+      <stop offset="100%" stop-color="#008FCC"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Vòng tròn bao ngoài của chữ Q -->
+  <path d="M56,32 C56,18.745 45.255,8 32,8 C18.745,8 8,18.745 8,32 C8,45.255 18.745,56 32,56 C39.6,56 46.2,52.4 50.4,46.8" stroke="url(#circuit_blue)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+
+  <!-- Phần "đuôi" của chữ Q với mạch điện -->
+  <path d="M50.4,46.8 L56,52.4" stroke="url(#circuit_blue)" stroke-width="2.5" stroke-linecap="round" />
+
+  <!-- Các đường mạch điện bên trong -->
+  <path d="M16,32 C16,23.163 23.163,16 32,16 M32,16 L38,16" stroke="url(#circuit_blue)" stroke-width="1.8" fill="none" stroke-linecap="round" />
+  <path d="M32,48 C23.163,48 16,40.837 16,32 L20,32" stroke="url(#circuit_blue)" stroke-width="1.8" fill="none" stroke-linecap="round" />
+  <path d="M32,48 L38,48 M42,48 C45.314,48 48,45.314 48,42 L48,36 L52,32" stroke="url(#circuit_blue)" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+  <!-- Các "nốt" và kết nối mạch -->
+  <circle cx="32" cy="16" r="1.5" fill="url(#nodes_blue)" />
+  <circle cx="20" cy="32" r="1.5" fill="url(#nodes_blue)" />
+  <circle cx="38" cy="48" r="1.5" fill="url(#nodes_blue)" />
+  <circle cx="52" cy="32" r="2.0" fill="url(#nodes_blue)" /> <!-- Nốt đuôi Q chính -->
+  <circle cx="48" cy="42" r="1.0" fill="url(#nodes_blue)" />
+</svg>
