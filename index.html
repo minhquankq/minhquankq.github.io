@@ -541,6 +541,7 @@
       }
       .card-tags {
         display: flex;
+        flex-wrap: wrap;
         gap: 0.4rem;
       }
       .tag {
@@ -753,7 +754,7 @@
       <section class="projects" aria-label="Selected projects">
         <div class="projects-header">
           <h2 class="projects-title">My Projects</h2>
-          <span class="projects-count">02 Works</span>
+          <span class="projects-count">03 Works</span>
         </div>
 
         <div class="project-list">
@@ -774,8 +775,12 @@
                 manage your budget effectively.
               </div>
               <div class="card-tags">
+                <span class="tag">Spec-Kit</span>
+                <span class="tag">Next.js</span>
                 <span class="tag">React</span>
                 <span class="tag">TypeScript</span>
+                <span class="tag">Python</span>
+                <span class="tag">PostgreSQL</span>
               </div>
             </div>
             <div class="card-arrow">
@@ -799,6 +804,33 @@
               </div>
               <div class="card-tags">
                 <span class="tag">Next.js</span>
+                <span class="tag">React</span>
+              </div>
+            </div>
+            <div class="card-arrow">
+              <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+            </div>
+          </a>
+
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=quan-vo.vs-workspace-todo"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="project-card"
+            aria-label="Workspace Todo – view project"
+          >
+            <div class="card-icon">
+              <img src="./media/vs-todo.svg" alt="Workspace Todo" />
+            </div>
+            <div class="card-body">
+              <div class="card-name">Workspace Todo</div>
+              <div class="card-desc">
+                A VS Code extension that provides a workspace-scoped todo list
+                with markdown support.
+              </div>
+              <div class="card-tags">
+                <span class="tag">VS Code extension</span>
+                <span class="tag">TypeScript</span>
                 <span class="tag">React</span>
               </div>
             </div>
